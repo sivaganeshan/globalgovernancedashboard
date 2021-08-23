@@ -47,14 +47,16 @@ function Table({columns, data}){
 }
 
 type ToptenprotocolsData ={
-    protocols : topProtocolsByProposals[]
+    protocols : topProtocolsByProposals[],
+    tableHeader : string,
+    columnValue: string
 }
 
-const TopTenProtocols : React.FC<ToptenprotocolsData>= ({protocols})=>{
+const TopTenProtocols : React.FC<ToptenprotocolsData>= ({protocols,tableHeader,columnValue})=>{
 
     const columns = React.useMemo(() => [
         {
-          Header: 'Top 10 Protocols by Proposals',
+          Header: tableHeader,
           columns: [
             {
               Header: 'Name',
@@ -63,15 +65,23 @@ const TopTenProtocols : React.FC<ToptenprotocolsData>= ({protocols})=>{
               Cell: props => {
                 return (
                   <div>
-                    <span className="cellImg"><Image src={props.row.original.thumbUrl} alt="thumbnail" width='24' height='24'></Image></span>
+                    <span className="cellImg"><Image src={props.row.original.thumbUrl} alt="thumbnail" width='18' height='18'></Image></span>
                     <span className="cellName">{props.row.original.name}</span>
                   </div>
                 )
               }
             },
             {
-              Header: 'No of Proposals',
+              Header: columnValue,
               accessor: 'totalProposals',
+              // @ts-ignore 
+              Cell: props => {
+                return(
+                  <div className="centerAlign">
+                  {props.row.original.totalProposals.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                  </div>
+                )
+              }
             },
           ]
         }],[]) 

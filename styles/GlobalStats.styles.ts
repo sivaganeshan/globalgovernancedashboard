@@ -1,12 +1,31 @@
 import styled from 'styled-components';
 
 export const GlobalStatsWrapper = styled.div`
+.parent{
+    display:flex;
+    flex-directio:row;
+}
+
 .card{
-    width:150px;
-    height: 150px;
-    padding:10px;
-    margin:10px;
+    min-width:9rem;
+    max-width:10rem;
+    padding:0.7em;
+    margin:0.7em;
     border: 1px solid #eee;
     box-shadow: 0 2px 2px  #ccc;
+    text-align:center;
+    font-family:Roboto;
+    font-weight:500;
+}
+.numbersVal{
+    color:#b00707;
+}
+
+@media only screen and (max-width: 480px) {
+    .parent{
+        flex-direction:column;
+        align-items:center;
+    }
+    
 }
 `

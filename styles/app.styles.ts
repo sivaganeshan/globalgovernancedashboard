@@ -34,6 +34,7 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
     flex-direction: column;
     height:100%;
     z-index: -1;
+    margin-right: 1rem;
   }
   .sidebaritem:nth-child(1){
     margin-top: 8rem;
@@ -45,34 +46,17 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
   .content{
     margin-left : 10rem;
     margin-top : 1rem;
+  }
+  .topTables{
     display:flex;
     flex-direction:row;
+    justify-content:space-evenly;
   }
-  .homeTop{
+  .globalStats{
     display:flex;
-    flex-direction:row;
-  }
-
-  .loading {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(255,255,255,.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 1s ease-in-out infinite;
-    -webkit-animation: spin 1s ease-in-out infinite;
-    top:50%;
-    left:50%;
-    position:fixed;
-    transform: translate(-50%, -50%);
-    z-index:10;
+    justify-content:space-evenly;
   }
   
-  keyframes spin {
-    from{ transform: rotate(0deg);},
-    to { transform: rotate(360deg); }
-  }
   
   @media only screen and (max-width: 480px) {
     .bars {
@@ -92,7 +76,12 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
         margin-left : 1rem;
         flex-direction:column;
       }
-      .homeTop{
+      
+      .topTables{
+        flex-direction:column;
+        align-items:center;
+      }
+      .globalStats{
         flex-direction:column;
       }
     

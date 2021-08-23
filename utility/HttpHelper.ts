@@ -45,7 +45,7 @@ export type topProtocolsByProposals = {
     totalProposals: number
 }
 
-export const getTop10Protocols = () =>{
+export const getTop10ProtocolsByProposals = () =>{
     let toptenProtocols = protocols.data.sort((a,b)=>(b.totalProposals) -(a.totalProposals)).slice(0,10);
     let responsedata:topProtocolsByProposals[]= [];
     toptenProtocols.map(item =>{
@@ -53,6 +53,32 @@ export const getTop10Protocols = () =>{
             "thumbUrl": item.icons?(item.icons.length>0?item.icons[0].url: undefined):undefined,
             "name": item.name,
             "totalProposals": item.totalProposals
+        })
+    });
+    return responsedata;
+}
+
+export const getTop10ProtocolsByVoters = () =>{
+    let toptenProtocols = protocols.data.sort((a,b)=>(b.uniqueVoters) -(a.uniqueVoters)).slice(0,10);
+    let responsedata:topProtocolsByProposals[]= [];
+    toptenProtocols.map(item =>{
+        responsedata.push({
+            "thumbUrl": item.icons?(item.icons.length>0?item.icons[0].url: undefined):undefined,
+            "name": item.name,
+            "totalProposals": item.uniqueVoters
+        })
+    });
+    return responsedata;
+}
+
+export const getTop10ProtocolsByVotes = () =>{
+    let toptenProtocols = protocols.data.sort((a,b)=>(b.totalVotes) -(a.totalVotes)).slice(0,10);
+    let responsedata:topProtocolsByProposals[]= [];
+    toptenProtocols.map(item =>{
+        responsedata.push({
+            "thumbUrl": item.icons?(item.icons.length>0?item.icons[0].url: undefined):undefined,
+            "name": item.name,
+            "totalProposals": item.totalVotes
         })
     });
     return responsedata;

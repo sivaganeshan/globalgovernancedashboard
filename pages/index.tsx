@@ -2,7 +2,8 @@ import Head from 'next/head'
 import {IndexWrapper} from "../styles/app.styles"
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import {getGlobalstats, /*getallProposals, getallProtocols */ getTop10Protocols, topProtocolsByProposals} from "../utility/HttpHelper";
+import {getGlobalstats, /*getallProposals, getallProtocols */  topProtocolsByProposals, getTop10ProtocolsByVoters
+,getTop10ProtocolsByProposals,getTop10ProtocolsByVotes} from "../utility/HttpHelper";
 import GlobalStats from "../components/GlobalStats";
 import Loading from "../components/loading";
 import TopTenProtocols from "../components/TopTenProtocols"
@@ -24,6 +25,8 @@ export default function Home()  {
   const[totalUniqueVoters, settotalUniqueVoters] = useState<number>(0);
   const[totalVotesCast, settotalVotesCast] = useState<number>(0);
   const[toptenProtocols,setTopTenProtocols] = useState<topProtocolsByProposals[]>([]);
+  const[toptenProtocolsbyVoters,setTopTenProtocolsByVoters] = useState<topProtocolsByProposals[]>([]);
+  const[toptenProtocolsbyVotes,setTopTenProtocolsByVotes] = useState<topProtocolsByProposals[]>([]);
   //const[allProposals, setAllProposals] = useState<string | undefined>(undefined);
  // const[allProtocols, setallProtocols] = useState<string | undefined>(undefined)
 
@@ -54,15 +57,16 @@ export default function Home()  {
     // }
     // getRequiredData();
     //#endregion
-    const interval = setInterval(() => {
-      settotalProposals(62);
-        settotalProtocols(2496);
+   
+      settotalProposals(2496);
+        settotalProtocols(62);
         settotalUniqueVoters(37585);
         settotalVotesCast(218354);
-        setTopTenProtocols(getTop10Protocols());
+        setTopTenProtocols(getTop10ProtocolsByProposals());
+        setTopTenProtocolsByVoters(getTop10ProtocolsByVoters());
+        setTopTenProtocolsByVotes(getTop10ProtocolsByVotes());
         setIsLoading(false);
-    }, 3000);
-    return () => clearInterval(interval);
+    
   },[]);
 
   return (
@@ -100,13 +104,15 @@ export default function Home()  {
       </div>
       <div className="content">
         <div className="homeTop">
-            <div className="leftEle">
+            <div className="globalStats">
             <GlobalStats totalProposals={totalProposals} totalProtocols={totalProtocols} totalUniqueVoters={totalUniqueVoters} totalVotesCast={totalVotesCast}/>
             </div>
-            <div className="rightEle">
-            <TopTenProtocols protocols={toptenProtocols}/>
-            </div>
        </div>
+       <div className="topTables">
+            <TopTenProtocols protocols={toptenProtocols} columnValue='No of Proposals' tableHeader='Top 10 Protocols By Proposals'/>
+            <TopTenProtocols protocols={toptenProtocolsbyVoters} columnValue='No of Unique Voters' tableHeader='Top 10 Protocols By Voters'/>
+            <TopTenProtocols protocols={toptenProtocolsbyVotes} columnValue='No of Unique Votes' tableHeader='Top 10 Protocols By Votes'/>
+      </div>
        
       </div>
       </>

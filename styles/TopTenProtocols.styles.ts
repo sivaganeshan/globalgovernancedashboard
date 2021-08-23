@@ -8,6 +8,9 @@ padding: 1rem;
 .cellImg{
     margin-top:0.5em;
 }
+.centerAlign{
+  text-align:center;
+}
 
   table {
     border-spacing: 0;
