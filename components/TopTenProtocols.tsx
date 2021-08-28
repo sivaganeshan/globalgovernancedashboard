@@ -2,7 +2,8 @@ import React from 'react'
 import {topProtocolsByProposals} from "../utility/HttpHelper"
 import { useTable } from 'react-table';
 import {TableWrapper} from '../styles/TopTenProtocols.styles';
-import Image from 'next/image'
+import Image from 'next/image';
+import Link from 'next/link';
 
 
 {/* 
@@ -64,9 +65,13 @@ const TopTenProtocols : React.FC<ToptenprotocolsData>= ({protocols,tableHeader,c
                 // @ts-ignore 
               Cell: props => {
                 return (
-                  <div>
+                  <div className="proposalEle">
+                    <Link href={`/protocols/${props.row.original.cname}`}>
+                    <a>
                     <span className="cellImg"><Image src={props.row.original.thumbUrl} alt="thumbnail" width='18' height='18'></Image></span>
                     <span className="cellName">{props.row.original.name}</span>
+                    </a>
+                    </Link>
                   </div>
                 )
               }

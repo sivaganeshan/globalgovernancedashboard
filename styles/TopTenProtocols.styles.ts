@@ -11,6 +11,10 @@ padding: 1rem;
 .centerAlign{
   text-align:center;
 }
+.proposalEle:hover{
+ color: #113a68;
+ text-decoration:underline;
+}
 
   table {
     border-spacing: 0;

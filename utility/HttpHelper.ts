@@ -42,7 +42,8 @@ export const getallProtocols= async ()=>  {
 export type topProtocolsByProposals = {
     thumbUrl : string | undefined,
     name : string,
-    totalProposals: number
+    totalProposals: number,
+    cname:string
 }
 
 export const getTop10ProtocolsByProposals = () =>{
@@ -52,7 +53,8 @@ export const getTop10ProtocolsByProposals = () =>{
         responsedata.push({
             "thumbUrl": item.icons?(item.icons.length>0?item.icons[0].url: undefined):undefined,
             "name": item.name,
-            "totalProposals": item.totalProposals
+            "totalProposals": item.totalProposals,
+            "cname": item.cname
         })
     });
     return responsedata;
@@ -65,7 +67,8 @@ export const getTop10ProtocolsByVoters = () =>{
         responsedata.push({
             "thumbUrl": item.icons?(item.icons.length>0?item.icons[0].url: undefined):undefined,
             "name": item.name,
-            "totalProposals": item.uniqueVoters
+            "totalProposals": item.uniqueVoters,
+            "cname": item.cname
         })
     });
     return responsedata;
@@ -78,7 +81,8 @@ export const getTop10ProtocolsByVotes = () =>{
         responsedata.push({
             "thumbUrl": item.icons?(item.icons.length>0?item.icons[0].url: undefined):undefined,
             "name": item.name,
-            "totalProposals": item.totalVotes
+            "totalProposals": item.totalVotes,
+            "cname": item.cname
         })
     });
     return responsedata;

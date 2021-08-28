@@ -7,6 +7,9 @@ import {getGlobalstats, /*getallProposals, getallProtocols */  topProtocolsByPro
 import GlobalStats from "../components/GlobalStats";
 import Loading from "../components/loading";
 import TopTenProtocols from "../components/TopTenProtocols"
+import Image from 'next/image'
+import boadrroomlogo from "../public/boardroominc.png";
+
 
 type globalStatsProp={
   totalProposals: number,
@@ -70,7 +73,11 @@ export default function Home()  {
   },[]);
 
   return (
+
     <div>
+      <Head>
+        <title>Global Governance Dashboard | BoardRoom API</title>
+      </Head>
       <IndexWrapper userClicked={sideMenuClicked} >
       {isloading && <Loading />}
       {!isloading && errorText && <div id="errorText">{errorText}</div>}
@@ -81,7 +88,7 @@ export default function Home()  {
         <div className="headerName">Global Governance Dashboard</div>
       </div>
       <div className="sidebar">
-        <div className="sidebaritem">
+        <div className="sidebaritem selected">
         <Link  href="/">
           <a>Home</a>
         </Link>
@@ -110,12 +117,20 @@ export default function Home()  {
        </div>
        <div className="topTables">
             <TopTenProtocols protocols={toptenProtocols} columnValue='No of Proposals' tableHeader='Top 10 Protocols By Proposals'/>
-            <TopTenProtocols protocols={toptenProtocolsbyVoters} columnValue='No of Unique Voters' tableHeader='Top 10 Protocols By Voters'/>
-            <TopTenProtocols protocols={toptenProtocolsbyVotes} columnValue='No of Unique Votes' tableHeader='Top 10 Protocols By Votes'/>
+            <TopTenProtocols protocols={toptenProtocolsbyVoters} columnValue='No of Voters' tableHeader='Top 10 Protocols By Voters'/>
+            <TopTenProtocols protocols={toptenProtocolsbyVotes} columnValue='No of Votes' tableHeader='Top 10 Protocols By Votes'/>
       </div>
-       
+      <div className="footer">
+      <span>
+        <Image src={boadrroomlogo}
+         alt="boardroom_logo" width="50px" height="50px"></Image>
+         </span>
+        <span className="footer-text">Powered By BoardRoom API</span>
       </div>
+      </div>
+     
       </>
+      
       }
       </IndexWrapper>
     </div>

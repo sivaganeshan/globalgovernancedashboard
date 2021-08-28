@@ -15,7 +15,7 @@ export const GlobalStatsWrapper = styled.div`
     box-shadow: 0 2px 2px  #ccc;
     text-align:center;
     font-family:Roboto;
-    font-weight:500;
+    font-weight:550;
 }
 .numbersVal{
     color:#b00707;

@@ -17,7 +17,7 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
     font-family: 'Roboto', sans-serif;
     font-size: 2rem;
     color: #fff;
-    padding: 0.2rem;
+    padding: 1rem;
     margin-left: 1rem;
   }
   .bars{
@@ -35,13 +35,16 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
     height:100%;
     z-index: -1;
     margin-right: 1rem;
+    width:10%;
   }
   .sidebaritem:nth-child(1){
     margin-top: 8rem;
   }
   .sidebaritem{
-    margin:1rem;
-    padding:0.5rem;
+    margin-top:1rem;
+    margin-bottom:1rem;
+    padding:1rem;
+    font-size:1.125rem;
   }
   .content{
     margin-left : 10rem;
@@ -56,7 +59,21 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
     display:flex;
     justify-content:space-evenly;
   }
-  
+  .selected{
+    background : linear-gradient(#947c4f,#7a824a);
+  }
+  .footer{
+    postion:fixed;
+    display : flex;
+    color: #113a68;
+    justify-content:center;
+    margin-top:2rem;
+    opacity:0.6;
+  }
+  .footer-text{
+    align-self:center;
+    margin-left: 1rem;
+  }
   
   @media only screen and (max-width: 480px) {
     .bars {
@@ -70,6 +87,7 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
     .sidebar{
       display: ${({ userClicked })=> userClicked?'flex':'none'};
       position: absolute;
+      width:30%;
     }
     .content{
         display:${({ userClicked })=> userClicked?'none':'flex'};
@@ -84,7 +102,8 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
       .globalStats{
         flex-direction:column;
       }
-    
+      
+      
   }
 `
 
