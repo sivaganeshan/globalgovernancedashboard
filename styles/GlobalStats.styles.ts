@@ -21,7 +21,7 @@ export const GlobalStatsWrapper = styled.div`
     color:#b00707;
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 700px) {
     .parent{
         flex-direction:column;
         align-items:center;

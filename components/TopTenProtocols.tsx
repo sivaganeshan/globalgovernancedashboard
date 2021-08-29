@@ -1,5 +1,5 @@
 import React from 'react'
-import {topProtocolsByProposals} from "../utility/HttpHelper"
+import {topProtocolsByProposals} from "../utility/typedefinitions"
 import { useTable } from 'react-table';
 import {TableWrapper} from '../styles/TopTenProtocols.styles';
 import Image from 'next/image';

@@ -2,21 +2,18 @@ import Head from 'next/head'
 import {IndexWrapper} from "../styles/app.styles"
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import {getGlobalstats, /*getallProposals, getallProtocols */  topProtocolsByProposals, getTop10ProtocolsByVoters
-,getTop10ProtocolsByProposals,getTop10ProtocolsByVotes} from "../utility/HttpHelper";
+import {getGlobalstats, /*getallProposals, getallProtocols */   getTop10ProtocolsByVoters
+,getTop10ProtocolsByProposals,getTop10ProtocolsByVotes, getallProtocols} from "../utility/httpHelper";
 import GlobalStats from "../components/GlobalStats";
 import Loading from "../components/loading";
 import TopTenProtocols from "../components/TopTenProtocols"
 import Image from 'next/image'
 import boadrroomlogo from "../public/boardroominc.png";
+import {topProtocolsByProposals} from "../utility/typedefinitions";
+import DataStore from "../utility/dataStore";
 
 
-type globalStatsProp={
-  totalProposals: number,
-    totalProtocols:number,
-    totalUniqueVoters:number,
-    totalVotesCast:number
-}
+
 
 export default function Home()  {
 
@@ -34,41 +31,51 @@ export default function Home()  {
  // const[allProtocols, setallProtocols] = useState<string | undefined>(undefined)
 
   useEffect(()=>{
-     function getRequiredData(){
+     //function getRequiredData(){
        //#region  actual code
-      //try{
-        //  getGlobalstats().then((response)=>{
-        //   let globalStates  = response.data;
-        //   settotalProposals(globalStates.totalProposals);
-        // settotalProtocols(globalStates.totalProtocols);
-        // settotalUniqueVoters(globalStates.totalUniqueVoters);
-        // settotalVotesCast(globalStates.totalVotesCast);
-        // setIsLoading(false);
+      function getInitialData(){
+         try{
+           
+          let _instance = DataStore.getInstance();
+          let globalStats = _instance.getGlobalStatsData();
+          if(globalStats && globalStats.totalProposals){
+            //await getGlobalstats();
+            let _instance = DataStore.getInstance();
+            let globalStats = _instance.getGlobalStatsData();
+            settotalProposals(globalStats?globalStats.totalProposals:0);
+            settotalProtocols(globalStats?globalStats.totalProtocols:0);
+            settotalUniqueVoters(globalStats?globalStats.totalUniqueVoters:0);
+            settotalVotesCast(globalStats?globalStats.totalVotesCast:0);
+            setTopTenProtocols(getTop10ProtocolsByProposals());
+            setTopTenProtocolsByVoters(getTop10ProtocolsByVoters());
+            setTopTenProtocolsByVotes(getTop10ProtocolsByVotes());
+            setIsLoading(false);
 
-        
-        }
-        
-        //let globalStates = JSON.parse(await getGlobalstats());
-        
-        //setAllProposals(await getallProposals());
-        //setallProtocols(await getallProtocols());
-        
-    //   catch(err){
-    //     setIsLoading(false);
-    //     setErrorText(err.message);
-    //   }
-    // }
-    // getRequiredData();
-    //#endregion
-   
-      settotalProposals(2496);
-        settotalProtocols(62);
-        settotalUniqueVoters(37585);
-        settotalVotesCast(218354);
-        setTopTenProtocols(getTop10ProtocolsByProposals());
-        setTopTenProtocolsByVoters(getTop10ProtocolsByVoters());
-        setTopTenProtocolsByVotes(getTop10ProtocolsByVotes());
-        setIsLoading(false);
+          }
+          else{
+            Promise.all([getGlobalstats(),getallProtocols()]).then(()=>{
+              console.log("gloabal stats data fetched");
+              let _instance = DataStore.getInstance();
+              let globalStats = _instance.getGlobalStatsData();
+              settotalProposals(globalStats?globalStats.totalProposals:0);
+              settotalProtocols(globalStats?globalStats.totalProtocols:0);
+              settotalUniqueVoters(globalStats?globalStats.totalUniqueVoters:0);
+              settotalVotesCast(globalStats?globalStats.totalVotesCast:0);
+              console.log("protocols data fetched");
+              setTopTenProtocols(getTop10ProtocolsByProposals());
+              setTopTenProtocolsByVoters(getTop10ProtocolsByVoters());
+              setTopTenProtocolsByVotes(getTop10ProtocolsByVotes());
+              setIsLoading(false);
+             })
+          }
+           
+         }
+         catch(err){
+           console.log(err.message);
+           setErrorText(err.message);
+         }
+       }
+       getInitialData();  
     
   },[]);
 
@@ -94,7 +101,7 @@ export default function Home()  {
         </Link>
         </div>
         <div className="sidebaritem">
-        <Link href="/">
+        <Link href="/protocols">
           <a>Protocols</a>
         </Link>
         </div>
@@ -125,7 +132,7 @@ export default function Home()  {
         <Image src={boadrroomlogo}
          alt="boardroom_logo" width="50px" height="50px"></Image>
          </span>
-        <span className="footer-text">Powered By BoardRoom API</span>
+        <span className="footer-text">Data provided by BoardRoom API</span>
       </div>
       </div>
      

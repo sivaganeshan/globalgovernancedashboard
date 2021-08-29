@@ -1,14 +1,22 @@
-import {protocols, proposals} from "../utility/data"
+import {protocols, proposals} from "./data"
+import {topProtocolsByProposals, allProtocols} from "./typedefinitions"
+import DataStore from "./dataStore"
+import {MapToAllProposals} from "./mapper";
 
 export const getGlobalstats= async ()=>  {
     try{
         const endpoint = `https://api.boardroom.info/v1/stats`;
     const response = await(await fetch(endpoint)).json();
     console.log(response);
-    return response;
+    let staticInstance = DataStore.getInstance();
+    staticInstance.setGlobalStatsData(response);
+    //return response;
+    //Promise.resolve();
     }
     catch(err){
+        console.log('error in getGlobalstats:'+err.message);
         throw 'error while fetching global stats';
+        //Promise.reject();
     }
 }
 
@@ -26,32 +34,34 @@ export const getallProposals= async ()=>  {
     }
 }
 
-export const getallProtocols= async ()=>  {
+export const getallProtocols= async () =>  {
     try{
-    //     const endpoint = `https://api.boardroom.info/v1/protocols`;
-    // const response = await(await fetch(endpoint)).json();
-    // if(!response.data) return undefined;
-    // return response.data;
-    return protocols.data;
+        const endpoint = `https://api.boardroom.info/v1/protocols`;
+        const response = await(await fetch(endpoint)).json();
+        if(!response.data) return undefined;
+        let result = MapToAllProposals(response.data);
+        let staticInstance = DataStore.getInstance();
+        staticInstance.setAllProtocolsData(result);
+        //Promise.resolve();
+        //return result;
     }
     catch(err){
+        console.log('error in getallProtocols:'+err.message);
         throw 'error while fetching all protocols';
+       // Promise.reject();
     }
 }
 
-export type topProtocolsByProposals = {
-    thumbUrl : string | undefined,
-    name : string,
-    totalProposals: number,
-    cname:string
-}
+
 
 export const getTop10ProtocolsByProposals = () =>{
-    let toptenProtocols = protocols.data.sort((a,b)=>(b.totalProposals) -(a.totalProposals)).slice(0,10);
+    let staticInstance = DataStore.getInstance();
+    //let toptenProtocols = protocols.data.sort((a,b)=>(b.totalProposals) -(a.totalProposals)).slice(0,10);
+    let toptenProtocols = staticInstance.getAllProtocolsData().sort((a,b)=>(b.totalProposals)-(a.totalProposals)).slice(0,10);
     let responsedata:topProtocolsByProposals[]= [];
     toptenProtocols.map(item =>{
         responsedata.push({
-            "thumbUrl": item.icons?(item.icons.length>0?item.icons[0].url: undefined):undefined,
+            "thumbUrl": item.thumbUrl,
             "name": item.name,
             "totalProposals": item.totalProposals,
             "cname": item.cname
@@ -61,11 +71,13 @@ export const getTop10ProtocolsByProposals = () =>{
 }
 
 export const getTop10ProtocolsByVoters = () =>{
-    let toptenProtocols = protocols.data.sort((a,b)=>(b.uniqueVoters) -(a.uniqueVoters)).slice(0,10);
+    let staticInstance = DataStore.getInstance();
+    //let toptenProtocols = protocols.data.sort((a,b)=>(b.uniqueVoters) -(a.uniqueVoters)).slice(0,10);
+    let toptenProtocols = staticInstance.getAllProtocolsData().sort((a,b)=>(b.uniqueVoters)-(a.uniqueVoters)).slice(0,10);
     let responsedata:topProtocolsByProposals[]= [];
     toptenProtocols.map(item =>{
         responsedata.push({
-            "thumbUrl": item.icons?(item.icons.length>0?item.icons[0].url: undefined):undefined,
+            "thumbUrl": item.thumbUrl,
             "name": item.name,
             "totalProposals": item.uniqueVoters,
             "cname": item.cname
@@ -75,11 +87,13 @@ export const getTop10ProtocolsByVoters = () =>{
 }
 
 export const getTop10ProtocolsByVotes = () =>{
-    let toptenProtocols = protocols.data.sort((a,b)=>(b.totalVotes) -(a.totalVotes)).slice(0,10);
+    let staticInstance = DataStore.getInstance();
+   //let toptenProtocols = protocols.data.sort((a,b)=>(b.totalVotes) -(a.totalVotes)).slice(0,10);
+   let toptenProtocols = staticInstance.getAllProtocolsData().sort((a,b)=>(b.totalVotes)-(a.totalVotes)).slice(0,10);
     let responsedata:topProtocolsByProposals[]= [];
     toptenProtocols.map(item =>{
         responsedata.push({
-            "thumbUrl": item.icons?(item.icons.length>0?item.icons[0].url: undefined):undefined,
+            "thumbUrl": item.thumbUrl,
             "name": item.name,
             "totalProposals": item.totalVotes,
             "cname": item.cname

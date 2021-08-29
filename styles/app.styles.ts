@@ -33,9 +33,9 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
     left:0;
     flex-direction: column;
     height:100%;
-    z-index: -1;
+    
     margin-right: 1rem;
-    width:10%;
+
   }
   .sidebaritem:nth-child(1){
     margin-top: 8rem;
@@ -59,9 +59,7 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
     display:flex;
     justify-content:space-evenly;
   }
-  .selected{
-    background : linear-gradient(#947c4f,#7a824a);
-  }
+  
   .footer{
     postion:fixed;
     display : flex;
@@ -74,8 +72,12 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
     align-self:center;
     margin-left: 1rem;
   }
+  .selected{
+    background : linear-gradient(#947c4f,#7a824a);
+  }
+
   
-  @media only screen and (max-width: 480px) {
+  @media only screen and (max-width: 700px) {
     .bars {
       display: inherit;
       font-size: 2rem;
@@ -88,6 +90,7 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
       display: ${({ userClicked })=> userClicked?'flex':'none'};
       position: absolute;
       width:30%;
+      z-index: -1;
     }
     .content{
         display:${({ userClicked })=> userClicked?'none':'flex'};
@@ -102,7 +105,9 @@ export const IndexWrapper = styled.div<IndexWrapperProps>`
       .globalStats{
         flex-direction:column;
       }
-      
+      .sidebaritem:nth-child(1){
+        margin-top: 10rem;
+      }
       
   }
 `

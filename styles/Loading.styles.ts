@@ -2,7 +2,11 @@ import styled from 'styled-components';
 
 const LoadingWrapper = styled.div`
 .loading {
-    display: inline-block;
+  top: 50%;
+  position: absolute;
+  left: 50%;
+  margin: auto;
+  transform: translate(50%, 50%);
     width: 50px;
     height: 50px;
     border: 3px solid rgba(0,0,111,.3);
