@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
       },
       '@global': {
         'ul>div:nth-child(odd)': {
-            backgroundColor: '#eee',
+            backgroundColor: '#f9f9f9',
         },
     }
       
@@ -52,6 +52,8 @@ type ProtocolsData = {
     allProtocolsFromStore : allProtocols[]
 }
 const ProtocolsPagination : React.FC<ProtocolsData> = ({allProtocolsFromStore})=>{
+
+    let router = useRouter();
 
 const[currentProposals, SetCurrentProposals] = useState<allProtocols[]>(allProtocolsFromStore);
 
@@ -132,10 +134,10 @@ let ByDescClicked=()=>{
     SetListByAsc(false);
 }
 
-let RiredirectToProtocol=(event:any)=>{
-    //let router = useRouter();
-    console.log(event)
-    //router.push(`/protocols/${defaultProto[0].cname}`);
+let RiredirectToProtocol=(cname:string)=>{
+   
+    console.log(cname)
+    router.push(`/protocols/${cname}`);
 }
 
 
@@ -171,7 +173,7 @@ return(<div className={classes.container}>
         map(item=>{
             const labelId = `list-secondary-label-${item.cname}`;
             return(
-                <ListItem key={item.cname} button onClick={(event) => {RiredirectToProtocol(event)}}>
+                <ListItem key={item.cname} button onClick={() => {RiredirectToProtocol(item.cname)}}>
                     <ListItemAvatar>
                         <Avatar alt={`avator of ${item.cname}`} src={item.thumbUrl} ></Avatar>
                     </ListItemAvatar>
