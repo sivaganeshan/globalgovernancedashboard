@@ -9,7 +9,7 @@ export const GlobalStatsWrapper = styled.div`
 .card{
     min-width:9rem;
     max-width:10rem;
-    padding:0.7em;
+    padding:0.4em;
     margin:0.7em;
     border: 1px solid #eee;
     box-shadow: 0 2px 2px  #ccc;

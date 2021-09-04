@@ -11,12 +11,12 @@ type props = {
 const GlobalStats : React.FC<props> = ({totalProposals,totalProtocols,totalUniqueVoters,totalVotesCast})=>(
 <GlobalStatsWrapper>
     <div className="parent">
-        {totalProposals && 
-    <div className="card">
+       
+    <div className="card" >
         <p>Projects Integrated</p>
         <p className="numbersVal">{totalProtocols.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</p>
     </div>
-    }
+    
     <div className="card">
         <p>Proposals Made</p>
         <p className="numbersVal">{totalProposals.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</p>

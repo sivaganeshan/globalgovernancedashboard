@@ -19,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
       "& > *": {
         margin: theme.spacing(1)
       },
-      border: '1px solid #111',
+      border: '0.5px solid #111',
       borderRadius:'1.25rem',
-      marginTop:"2rem",
+      marginTop:"0.5rem",
       marginLeft:'20%',
       marginRight:'20%'
 
@@ -58,11 +58,11 @@ const ProtocolsPagination : React.FC<ProtocolsData> = ({allProtocolsFromStore})=
 const[currentProposals, SetCurrentProposals] = useState<allProtocols[]>(allProtocolsFromStore);
 
 
-const[sortByProposals, SetSortByProposals] = useState<boolean|undefined>(undefined);
-const[sortByVoters, SetSortByVoters] = useState<boolean|undefined>(undefined);
-const[sortByVotes, SetSortByVotes] = useState<boolean|undefined>(undefined);
+const[sortByProposals, SetSortByProposals] = useState<boolean>(true);
+const[sortByVoters, SetSortByVoters] = useState<boolean>(false);
+const[sortByVotes, SetSortByVotes] = useState<boolean>(false);
 
-const[listByAsc, SetListByAsc] = useState<boolean|undefined>(undefined);
+const[listByAsc, SetListByAsc] = useState<boolean>(false);
 
 //pagination
 const itemsPerPage = 5;
@@ -144,7 +144,8 @@ let RiredirectToProtocol=(cname:string)=>{
 
 return(<div className={classes.container}>
     <div>
-    <span style={{marginRight:'10px', fontSize:'1.125rem'}}> Sort By:</span>
+        <h4>Multi-Criteria LeaderBoard</h4>
+   
     <span style={{marginRight:'50px'}}>
     <ButtonGroup
         variant="contained"
@@ -170,7 +171,7 @@ return(<div className={classes.container}>
     <div>
     <List >
     {currentProposals.slice((page-1)*itemsPerPage, page*itemsPerPage).
-        map(item=>{
+        map((item,index)=>{
             const labelId = `list-secondary-label-${item.cname}`;
             return(
                 <ListItem key={item.cname} button onClick={() => {RiredirectToProtocol(item.cname)}}>
@@ -178,7 +179,7 @@ return(<div className={classes.container}>
                         <Avatar alt={`avator of ${item.cname}`} src={item.thumbUrl} ></Avatar>
                     </ListItemAvatar>
                     <ListItemText id={labelId}
-                        primary={item.name}
+                        primary={`${(index+1)+((page-1)*itemsPerPage)}.${item.name}`}
                   secondary={
                 <React.Fragment>
                     <React.Fragment>
