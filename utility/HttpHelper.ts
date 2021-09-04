@@ -10,13 +10,10 @@ export const getGlobalstats= async ()=>  {
     console.log(response);
     let staticInstance = DataStore.getInstance();
     staticInstance.setGlobalStatsData(response);
-    //return response;
-    //Promise.resolve();
     }
     catch(err){
         console.log('error in getGlobalstats:'+err.message);
         throw 'error while fetching global stats';
-        //Promise.reject();
     }
 }
 
@@ -42,19 +39,27 @@ export const getallProtocols= async () =>  {
         let result = MapToAllProposals(response.data);
         let staticInstance = DataStore.getInstance();
         staticInstance.setAllProtocolsData(result);
-        //Promise.resolve();
-        //return result;
+
     }
     catch(err){
         console.log('error in getallProtocols:'+err.message);
         throw 'error while fetching all protocols';
-       // Promise.reject();
     }
+}
+
+export const getallProtocolsFromStore=()=>{
+   
+        let staticInstance = DataStore.getInstance();
+        let responseData =  staticInstance.getAllProtocolsData();
+        return responseData;
+    
 }
 
 
 
-export const getTop10ProtocolsByProposals = () =>{
+
+
+export const getProtocolsByProposals = () =>{
     let staticInstance = DataStore.getInstance();
     //let toptenProtocols = protocols.data.sort((a,b)=>(b.totalProposals) -(a.totalProposals)).slice(0,10);
     let toptenProtocols = staticInstance.getAllProtocolsData().sort((a,b)=>(b.totalProposals)-(a.totalProposals)).slice(0,10);
@@ -70,10 +75,10 @@ export const getTop10ProtocolsByProposals = () =>{
     return responsedata;
 }
 
-export const getTop10ProtocolsByVoters = () =>{
+export const getProtocolsByVoters = () =>{
     let staticInstance = DataStore.getInstance();
     //let toptenProtocols = protocols.data.sort((a,b)=>(b.uniqueVoters) -(a.uniqueVoters)).slice(0,10);
-    let toptenProtocols = staticInstance.getAllProtocolsData().sort((a,b)=>(b.uniqueVoters)-(a.uniqueVoters)).slice(0,10);
+    let toptenProtocols = staticInstance.getAllProtocolsData().sort((a,b)=>(b.uniqueVoters)-(a.uniqueVoters));
     let responsedata:topProtocolsByProposals[]= [];
     toptenProtocols.map(item =>{
         responsedata.push({
@@ -86,7 +91,7 @@ export const getTop10ProtocolsByVoters = () =>{
     return responsedata;
 }
 
-export const getTop10ProtocolsByVotes = () =>{
+export const getProtocolsByVotes = () =>{
     let staticInstance = DataStore.getInstance();
    //let toptenProtocols = protocols.data.sort((a,b)=>(b.totalVotes) -(a.totalVotes)).slice(0,10);
    let toptenProtocols = staticInstance.getAllProtocolsData().sort((a,b)=>(b.totalVotes)-(a.totalVotes)).slice(0,10);

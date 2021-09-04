@@ -2,8 +2,8 @@ import Head from 'next/head'
 import {IndexWrapper} from "../../styles/app.styles"
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import {getGlobalstats, /*getallProposals, getallProtocols */   getTop10ProtocolsByVoters
-,getTop10ProtocolsByProposals,getTop10ProtocolsByVotes, getallProtocols} from "../../utility/httpHelper";
+import {getGlobalstats, /*getallProposals, getallProtocols */   getProtocolsByVoters
+,getProtocolsByProposals,getProtocolsByVotes, getallProtocols} from "../../utility/HttpHelper";
 import GlobalStats from "../../components/GlobalStats";
 import Loading from "../../components/loading";
 import TopTenProtocols from "../../components/TopTenProtocols"
@@ -11,13 +11,33 @@ import Image from 'next/image'
 import boadrroomlogo from "../../public/boardroominc.png";
 import {topProtocolsByProposals} from "../../utility/typedefinitions";
 import DataStore from "../../utility/dataStore";
+import { useRouter } from 'next/router'
 
 
 export default function Protocols(){
+    let router = useRouter();
 
     const[sideMenuClicked, SetSideMenuClicked] = useState<boolean>(false);
-    const[isloading, setIsLoading] = useState<boolean>(false);
+    const[isloading, setIsLoading] = useState<boolean>(true);
     const[errorText, setErrorText]= useState<string|undefined>(undefined);
+    const[defaultProtocol, setDefaultProtocol] = useState<string>("");
+
+    useEffect(()=>{
+        let _instance = DataStore.getInstance();
+        let allProtocols = _instance.getAllProtocolsData();
+        // console.log(allProtocols);
+        if(allProtocols && allProtocols.length>0)
+        {
+            let defaultProto = allProtocols.sort((a,b)=>(b.totalProposals)-(a.totalProposals)).slice(0,1);
+            setDefaultProtocol(defaultProto[0].cname);
+            setIsLoading(false);
+            console.log(defaultProto[0].cname);
+            
+            router.push(`/protocols/${defaultProto[0].cname}`);
+        }
+        setIsLoading(false);
+
+    },[]);
 
     return(
         <div>

@@ -2,16 +2,16 @@ import Head from 'next/head'
 import {IndexWrapper} from "../styles/app.styles"
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import {getGlobalstats, /*getallProposals, getallProtocols */   getTop10ProtocolsByVoters
-,getTop10ProtocolsByProposals,getTop10ProtocolsByVotes, getallProtocols} from "../utility/httpHelper";
+import {getGlobalstats, /*getallProposals, getallProtocols */   getProtocolsByVoters
+,getProtocolsByProposals,getProtocolsByVotes, getallProtocols, getallProtocolsFromStore} from "../utility/HttpHelper";
 import GlobalStats from "../components/GlobalStats";
 import Loading from "../components/loading";
 import TopTenProtocols from "../components/TopTenProtocols"
 import Image from 'next/image'
 import boadrroomlogo from "../public/boardroominc.png";
-import {topProtocolsByProposals} from "../utility/typedefinitions";
+import {allProtocols, topProtocolsByProposals} from "../utility/typedefinitions";
 import DataStore from "../utility/dataStore";
-
+import ProtocolsPagination from '../components/ProtocolsPagination';
 
 
 
@@ -27,6 +27,7 @@ export default function Home()  {
   const[toptenProtocols,setTopTenProtocols] = useState<topProtocolsByProposals[]>([]);
   const[toptenProtocolsbyVoters,setTopTenProtocolsByVoters] = useState<topProtocolsByProposals[]>([]);
   const[toptenProtocolsbyVotes,setTopTenProtocolsByVotes] = useState<topProtocolsByProposals[]>([]);
+  const[allProtocolsFromStore, SetallProtocolsFromStore] = useState<allProtocols[]>([]);
   //const[allProposals, setAllProposals] = useState<string | undefined>(undefined);
  // const[allProtocols, setallProtocols] = useState<string | undefined>(undefined)
 
@@ -46,9 +47,10 @@ export default function Home()  {
             settotalProtocols(globalStats?globalStats.totalProtocols:0);
             settotalUniqueVoters(globalStats?globalStats.totalUniqueVoters:0);
             settotalVotesCast(globalStats?globalStats.totalVotesCast:0);
-            setTopTenProtocols(getTop10ProtocolsByProposals());
-            setTopTenProtocolsByVoters(getTop10ProtocolsByVoters());
-            setTopTenProtocolsByVotes(getTop10ProtocolsByVotes());
+            setTopTenProtocols(getProtocolsByProposals());
+            setTopTenProtocolsByVoters(getProtocolsByVoters());
+            setTopTenProtocolsByVotes(getProtocolsByVotes());
+            SetallProtocolsFromStore(getallProtocolsFromStore().sort((a,b)=>(b.totalProposals)-(a.totalProposals)));
             setIsLoading(false);
 
           }
@@ -62,9 +64,10 @@ export default function Home()  {
               settotalUniqueVoters(globalStats?globalStats.totalUniqueVoters:0);
               settotalVotesCast(globalStats?globalStats.totalVotesCast:0);
               console.log("protocols data fetched");
-              setTopTenProtocols(getTop10ProtocolsByProposals());
-              setTopTenProtocolsByVoters(getTop10ProtocolsByVoters());
-              setTopTenProtocolsByVotes(getTop10ProtocolsByVotes());
+              setTopTenProtocols(getProtocolsByProposals());
+              setTopTenProtocolsByVoters(getProtocolsByVoters());
+              setTopTenProtocolsByVotes(getProtocolsByVotes());
+              SetallProtocolsFromStore(getallProtocolsFromStore().sort((a,b)=>(b.totalProposals)-(a.totalProposals)));
               setIsLoading(false);
              })
           }
@@ -78,6 +81,8 @@ export default function Home()  {
        getInitialData();  
     
   },[]);
+
+
 
   return (
 
@@ -119,14 +124,15 @@ export default function Home()  {
       <div className="content">
         <div className="homeTop">
             <div className="globalStats">
-            <GlobalStats totalProposals={totalProposals} totalProtocols={totalProtocols} totalUniqueVoters={totalUniqueVoters} totalVotesCast={totalVotesCast}/>
+            <GlobalStats totalProposals={totalProposals} totalProtocols={totalProtocols} totalUniqueVoters={totalUniqueVoters} totalVotesCast={totalVotesCast} />
             </div>
        </div>
-       <div className="topTables">
+       {/* <div className="topTables">
             <TopTenProtocols protocols={toptenProtocols} columnValue='No of Proposals' tableHeader='Top 10 Protocols By Proposals'/>
             <TopTenProtocols protocols={toptenProtocolsbyVoters} columnValue='No of Voters' tableHeader='Top 10 Protocols By Voters'/>
             <TopTenProtocols protocols={toptenProtocolsbyVotes} columnValue='No of Votes' tableHeader='Top 10 Protocols By Votes'/>
-      </div>
+      </div> */}
+      <ProtocolsPagination allProtocolsFromStore={allProtocolsFromStore}></ProtocolsPagination>
       <div className="footer">
       <span>
         <Image src={boadrroomlogo}
