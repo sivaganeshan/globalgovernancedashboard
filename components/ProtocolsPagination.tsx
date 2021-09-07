@@ -7,7 +7,6 @@ import Pagination from "@material-ui/lab/Pagination";
 import {allProtocols} from "../utility/typedefinitions";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import {getallProposals} from "../utility/HttpHelper";
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router'
 
