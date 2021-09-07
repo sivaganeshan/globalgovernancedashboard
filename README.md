@@ -1,8 +1,8 @@
 Global Governance DashBoard
 
-Demo app is deployed at : https://globalgovernancedashboard.vercel.app/
+Demo app : https://globalgovernancedashboard.vercel.app/
 
-Demo video is at : https://drive.google.com/file/d/1Q_1Qlhsm7RrsgHsmVimNkkkGyVVNsDaw/view?usp=sharing
+Demo video : https://drive.google.com/file/d/1Q_1Qlhsm7RrsgHsmVimNkkkGyVVNsDaw/view?usp=sharing
 
 Pages:
 
