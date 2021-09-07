@@ -41,9 +41,9 @@ export default function Protocol(){
               
                 //setErrorText("protocol cname does not exist");
                 //Fetch proposals data
-                Promise.all([getProtocolByName(protocolId.toString()),getProposalsbycname(protocolId.toString())]).then(()=>{
+                Promise.all([getProtocolByName(protocolId?protocolId.toString():""),getProposalsbycname(protocolId?protocolId.toString():"")]).then(()=>{
 
-                  let selected = getaProtocolByNamefromStore(protocolId.toString());
+                  let selected = getaProtocolByNamefromStore(protocolId?protocolId.toString():"");
                   SetTotalProposals(selected?selected.totalProposals:0);
                   SetUniqueVoters(selected?selected.uniqueVoters:0);
                   SetTotalVotes(selected?selected.totalVotes:0);
@@ -53,7 +53,7 @@ export default function Protocol(){
                   SetTokenPrice(selected?selected.tokenPrice.toString():"");
                   SetContractAddress(selected?selected.contractAddress.toString():"")
 
-                  let ProposalsResponse = getallProposalssFromStore(protocolId.toString());
+                  let ProposalsResponse = getallProposalssFromStore();
                   setProposalsData(ProposalsResponse);
                   setIsLoading(false);
                 })
