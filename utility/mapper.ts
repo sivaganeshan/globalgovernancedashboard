@@ -117,8 +117,8 @@ export const MapToProposals =((data:Proposal[]):ProposalResponse[]|[]=>{
                 let eleProposer = element.proposer;
                 let eleTotalVotes=element.totalVotes;
                 let eleExternalurl  =element.externalUrl;  
-                let eleStartsAt = new Date(element.startTimestamp).toLocaleString();
-                let eleEndsAt = new Date(element.endTimestamp).toLocaleString();
+                let eleStartsAt = new Date(element.startTimestamp*1000).toLocaleString();
+                let eleEndsAt = new Date(element.endTimestamp*1000).toLocaleString();
                 let eleChoices = element.choices?element.choices.join(' / '):"";
                 let eleResults = "";//element.results?element.results.forEach(ele).join('/'):"";
                 if(element.results){
