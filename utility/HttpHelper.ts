@@ -1,7 +1,7 @@
 import {protocols, proposals} from "./data"
 import {topProtocolsByProposals, allProtocols} from "./typedefinitions"
 import DataStore from "./dataStore"
-import {MapToAllProposals} from "./mapper";
+import {MapToAllProtocols,MapToOneProtocol, MapToProposals} from "./mapper";
 
 export const getGlobalstats= async ()=>  {
     try{
@@ -17,13 +17,25 @@ export const getGlobalstats= async ()=>  {
     }
 }
 
-export const getallProposals= async ()=>  {
+export const getallProposalssFromStore=()=>{
+   
+    let staticInstance = DataStore.getInstance();
+    let responseData =  staticInstance.getProposalsData();
+    return responseData;
+
+}
+
+export const getProposalsbycname= async (cname:string)=>  {
     try{
-    //     const endpoint = `https://api.boardroom.info/v1/proposals`;
-    // const response = await(await fetch(endpoint)).json();
-    // if(!response.data) return undefined;
-    // return response.data;
-        return proposals.data;
+        const endpoint = `https://api.boardroom.info/v1/protocols/${cname}/proposals`;
+        const response = await(await fetch(endpoint)).json();
+        if(!response.data) return undefined;
+        let result = MapToProposals(response.data);
+
+        let staticInstance = DataStore.getInstance();
+        staticInstance.setProposalsData(result);
+
+        return result;
 
     }
     catch(err){
@@ -36,7 +48,7 @@ export const getallProtocols= async () =>  {
         const endpoint = `https://api.boardroom.info/v1/protocols`;
         const response = await(await fetch(endpoint)).json();
         if(!response.data) return undefined;
-        let result = MapToAllProposals(response.data);
+        let result = MapToAllProtocols(response.data);
         let staticInstance = DataStore.getInstance();
         staticInstance.setAllProtocolsData(result);
 
@@ -55,7 +67,31 @@ export const getallProtocolsFromStore=()=>{
     
 }
 
+export const getaProtocolByNamefromStore=(cname:string)=>{
+    let staticInstance = DataStore.getInstance();
+    let responseData =  staticInstance.getaProtocolData();
+   
+    return responseData;
+}
 
+export const getProtocolByName=async(cname:string)=>{
+
+    //let askedProtocol:allProtocols ;
+    try{
+        const endpoint = `https://api.boardroom.info/v1/protocols/${cname}`;
+        const response = await(await fetch(endpoint)).json();
+        if(!response.data) return undefined;
+        let result = MapToOneProtocol(response.data);
+
+        let staticInstance = DataStore.getInstance();
+        staticInstance.setaProtocolData(result?result:undefined);
+       return result;
+    }
+    catch(err){
+        console.log('error in getProtocolByName:'+err.message);
+    }
+
+}
 
 
 

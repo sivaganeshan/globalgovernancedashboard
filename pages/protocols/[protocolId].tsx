@@ -2,27 +2,33 @@ import Head from 'next/head'
 import {IndexWrapper} from "../../styles/app.styles"
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import {getGlobalstats, /*getallProposals, getallProtocols */   getProtocolsByVoters
-,getProtocolsByProposals,getProtocolsByVotes, getallProtocols} from "../../utility/HttpHelper";
-import GlobalStats from "../../components/GlobalStats";
+import {getaProtocolByNamefromStore,getProtocolByName, getallProposalssFromStore,getProposalsbycname} from "../../utility/HttpHelper";
+import ProposalStats from "../../components/ProposalStats";
 import Loading from "../../components/loading";
 import TopTenProtocols from "../../components/TopTenProtocols"
 import Image from 'next/image'
 import boadrroomlogo from "../../public/boardroominc.png";
-import {topProtocolsByProposals} from "../../utility/typedefinitions";
+import {allProtocols, topProtocolsByProposals, ProposalResponse} from "../../utility/typedefinitions";
 import DataStore from "../../utility/dataStore";
 import {useRouter} from 'next/router';
+import ProtocolHeader from "../../components/ProtocolHeader";
+import ProposalsData from "../../components/ProposalsPagination";
 
 
 export default function Protocol(){
 
     const[sideMenuClicked, SetSideMenuClicked] = useState<boolean>(false);
-    const[isloading, setIsLoading] = useState<boolean>(false);
+    const[isloading, setIsLoading] = useState<boolean>(true);
     const[errorText, setErrorText]= useState<string|undefined>(undefined);
     const[totalProposals, SetTotalProposals] = useState<number>(0);
     const[uniqueVoters, SetUniqueVoters] = useState<number>(0);
     const[totalVotes, SetTotalVotes] = useState<number>(0);
-    const[defaultProtocol , setDefaultProtocol] = useState<string>("");
+    const[avatar, SetAvatar] = useState<string>("");
+    const[name, SetName] = useState<string>("");
+    const[tokensymbol, SetTokensymbol] = useState<string>("");
+    const[tokenPrice, SetTokenPrice] = useState<string>("");
+    const[contractAddress, SetContractAddress] = useState<string>("");
+    const [proposalsData, setProposalsData] = useState<ProposalResponse[]>([]);
     let router = useRouter();
 
     useEffect(()=>{
@@ -33,24 +39,25 @@ export default function Protocol(){
         function getRequiredData() {
           try {
               
-            let _instance = DataStore.getInstance();
-            let allProtocols = _instance.getAllProtocolsData();
-            
-            if (protocolId) {
-                setDefaultProtocol(protocolId.toString());
-              let requiredProtocol = allProtocols.filter(
-                (x) => x.cname === protocolId
-              );
-              if (requiredProtocol && requiredProtocol.length > 0) {
-                SetTotalProposals(requiredProtocol[0].totalProposals);
-                SetUniqueVoters(requiredProtocol[0].uniqueVoters);
-                SetTotalVotes(requiredProtocol[0].totalVotes);
-              } else {
-                setErrorText("protocol cname does not exist");
-              }
-            } else {
-              setErrorText("Protocol cname is empty");
-            }
+                //setErrorText("protocol cname does not exist");
+                //Fetch proposals data
+                Promise.all([getProtocolByName(protocolId.toString()),getProposalsbycname(protocolId.toString())]).then(()=>{
+
+                  let selected = getaProtocolByNamefromStore(protocolId.toString());
+                  SetTotalProposals(selected?selected.totalProposals:0);
+                  SetUniqueVoters(selected?selected.uniqueVoters:0);
+                  SetTotalVotes(selected?selected.totalVotes:0);
+                  SetAvatar(selected?selected.avatar:"");
+                  SetName(selected?selected.name:"");
+                  SetTokensymbol(selected?selected.tokenSymbol:"");
+                  SetTokenPrice(selected?selected.tokenPrice.toString():"");
+                  SetContractAddress(selected?selected.contractAddress.toString():"")
+
+                  let ProposalsResponse = getallProposalssFromStore(protocolId.toString());
+                  setProposalsData(ProposalsResponse);
+                  setIsLoading(false);
+                })
+                
           } catch (err) {
             setErrorText("Error in loading required Data");
           }
@@ -83,26 +90,21 @@ export default function Protocol(){
           <a>Protocols</a>
         </Link>
         </div>
-        <div className="sidebaritem">
-        <Link href="/">
-          <a>Proposals</a>
-        </Link>
-        </div>
-        <div className="sidebaritem">
-        <Link href="/">
-          <a>Votes</a>
-        </Link>
-        </div>
       </div>
       <div className="content">
         <div className="homeTop">
             <div className="globalStats">
-            <GlobalStats totalProposals={totalProposals} totalUniqueVoters={uniqueVoters} totalVotesCast={totalVotes} totalProtocols={0}/>
+            {/* <ProposalStats totalProposals={totalProposals} totalUniqueVoters={uniqueVoters} totalVotesCast={totalVotes}/> */}
         </div>
        </div>
        <div className="topTables">
-            
+       <ProtocolHeader avatar={avatar} name={name} tokenSymbol={tokensymbol} tokenPrice={tokenPrice} contractAddress={contractAddress} ></ProtocolHeader>
+       <ProposalStats totalProposals={totalProposals} totalUniqueVoters={uniqueVoters} totalVotesCast={totalVotes}/>
       </div>
+      <div className="topTables">
+       <ProposalsData allProposalsFromStore={proposalsData}></ProposalsData>
+      </div>
+
       <div className="footer">
       <span>
         <Image src={boadrroomlogo}

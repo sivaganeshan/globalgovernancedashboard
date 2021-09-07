@@ -61,4 +61,57 @@ export interface AllProtocolsResponse {
     tokens: Token[];
 }
 
+export interface StartTime {
+    timestamp: number;
+}
+
+export interface EndTime {
+    timestamp: number;
+}
+
+export interface Result {
+    total: number;
+    choice: number;
+}
+
+export interface Proposal {
+    refId: string;
+    id: string;
+    title: string;
+    content: string;
+    protocol: string;
+    adapter: string;
+    proposer: string;
+    totalVotes: number;
+    blockNumber: number;
+    externalUrl: string;
+    startTime: StartTime;
+    endTime: EndTime;
+    startTimestamp: number;
+    endTimestamp: number;
+    currentState: string;
+    choices: string[];
+    results: Result[];
+    events: any[];
+}
+
+export interface AllProposals {
+    data: Proposal[];
+    nextCursor: string;
+}
+
+export interface ProposalResponse{
+    title : string,
+    refid:string,
+    proposer:string,
+    totalVotes:number,
+    externalUrl:string,
+    startsAt:string,
+    endsAt:string,
+    choices : string,
+    results:string,
+    state:string,
+}
+
+
 

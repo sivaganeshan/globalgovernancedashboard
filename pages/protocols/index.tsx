@@ -64,16 +64,6 @@ export default function Protocols(){
           <a>Protocols</a>
         </Link>
         </div>
-        <div className="sidebaritem">
-        <Link href="/">
-          <a>Proposals</a>
-        </Link>
-        </div>
-        <div className="sidebaritem">
-        <Link href="/">
-          <a>Votes</a>
-        </Link>
-        </div>
       </div>
       <div className="content">
         <div className="homeTop">
